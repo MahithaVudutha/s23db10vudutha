@@ -1,0 +1,24 @@
+extends layout
+block content
+    div(class="container-fluid")
+        h1= title
+    - let results=[{zebra_color:"grey",zebra_breed:"Plain Zebra",zebra_price:25000},{zebra_color:"white",zebra_breed:"Cape mountain Zebra",zebra_price:15500},{zebra_color:"dark",zebra_breed:"Grevys Zebra",zebra_price:10000}]
+        div(class="row")
+            each form,item in results
+                div(class = "col-sm-2 bg-secondary" onclick=`buy(${item})`) #{form.zebra_color}
+                div(class = "col-sm-2 bg-secondary" onclick=`buy(${item})`) #{form.zebra_breed}
+                div(class = "col-sm-2 bg-secondary" onclick=`buy(${item})`) #{form.zebra_price}
+                hr
+    br
+    h5= 'buy'
+
+    div(class="container-fluid")
+      each zebra,index in results
+        div(class="row", onclick=`buy(${index})`)
+          div(class="col-sm-2") <br>zebra #{index}: #{zebra.zebra_color} breed:#{zebra.zebra_breed} price:#{zebra.zebra_price}
+
+    script.
+        function buy(itemNo)
+        {
+            alert(`You purchased Item ${itemNo+1}`)
+        }
