@@ -1,0 +1,57 @@
+extends layout
+
+block content
+  h1= title
+
+  if(toShow == null)
+    h2 No instance to update
+  else
+    - let zebraid = toShow._id
+    - let zebra_color = toShow.zebra_color
+    - let zebra_breed = toShow.zebra_breed
+    - let zebra_price = toShow.zebra_price
+    - let actionid = "/resource/zebras/" + zebraid
+    script let actionid = "#{actionid}"
+    div.row(class='mb-2')
+    div.mr-1 ID is 
+      span(style="color:red")  #{zebraid}
+    form(id='zebraForm', action= actionid, method="PUT")
+      div.form-group
+      div(class="row g-3 align-items-center")
+        div(class="col-1")
+          label.zebraAttr(for='zebra_color',class="col-form-label") zebra Colour
+        div(class="col-auto")
+          input#zebra_color(type='text', name='zebra_color',class="form-control", value=zebra_color)
+      div.form-group
+      div(class="row g-3 align-items-center")
+        div(class="col-1")
+          label.zebraAttr(for='zebra_breed',class="col-form-label") zebra Breed 
+        div(class="col-auto")
+          input#zebra_breed(type='text', name='zebra_breed',class="form-control", value=zebra_breed)
+      div.form-group
+      div(class="row g-3 align-items-center")
+        div(class="col-1")
+          label.zebraAttr(for='zebra_price',class="col-form-label") zebra cost
+        div(class="col-auto")
+          input#zebra_price(type='number', name='zebra_price',class="form-control", value=zebra_price)
+      input(class="btn btn-danger m-2" type="submit")
+        //- button(class="btn btn-danger m-2" onclick="deleteOnid()") Delete
+      button(class="btn btn-secondary m-2" onclick="cancel()") Cancel
+    
+    script.
+      document.forms['zebraForm'].addEventListener('submit', (event) => {
+       event.preventDefault();
+      // TODO do something here to show user that form is being submitted
+       fetch(event.target.action, {
+        method: 'PUT',
+        body: new URLSearchParams(new FormData(event.target)) // event.target is the form
+        }).then((resp) => {
+        return resp.json(); // or resp.text() or whatever the server sends
+        }).then((body) => {
+        alert("Update succeded")
+        // TODO handle body
+        }).zebrach((error) => {
+        // TODO handle error
+        alert("Update failed " + error )
+       });
+      });

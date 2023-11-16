@@ -1,0 +1,47 @@
+extends layout
+
+block content
+  h1= title
+
+  if(toShow == null)
+    h2 No instance to delete
+  else
+    - let zebraid = toShow._id
+    - let zebra_color = toShow.zebra_color
+    - let zebra_breed = toShow.zebra_breed
+    - let zebra_price = toShow.zebra_price
+    - let actionid = "/resource/zebras/" + zebraid
+    script let actionid = "#{actionid}"
+    div
+     div.row 
+      div(class='zebraAttr mr-3') zebra ID is:
+      div #{zebraid}
+     div.row
+      div(class='zebraAttr mr-3') zebra color is:
+      div #{zebra_color}
+     div.row
+      div(class='zebraAttr mr-3') zebra breed is:
+      div #{zebra_breed}
+     div.row
+      div(class='zebraAttr mr-3') zebra Price is:
+      div #{zebra_price}
+    button(class="btn btn-danger m-2" onclick="deleteOnid()") Delete
+    button(class="btn btn-secondary m-2" onclick="cancel()") Cancel
+  script.
+   function cancel() {
+    window.location.href='/zebras'
+    }
+  script.
+    function deleteOnid() {
+     console.log("starting delete")
+     fetch(actionid, {
+      method: 'DELETE'
+     }).then((resp) => {
+        return resp.json();
+     }).then((body) => {
+        alert("Delete succeded")
+        window.location.href='/zebra'
+     }).catch((error) => {
+        alert("Delete failed " + error )
+     });
+    }

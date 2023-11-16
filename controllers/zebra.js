@@ -69,3 +69,87 @@ exports.zebra_detail = async function(req, res) {
     }
     };
     
+// Handle zebra update form on PUT.
+exports.zebra_update_put = async function(req, res) {
+    console.log(`update on id ${req.params.id} with body
+    ${JSON.stringify(req.body)}`)
+    try {
+    let toUpdate = await zebra.findById( req.params.id)
+    // Do updates of properties
+    if(req.body.zebra_color)
+    toUpdate.zebra_color = req.body.zebra_color;
+    if(req.body.zebra_breed) toUpdate.zebra_breed = req.body.zebra_breed;
+    if(req.body.zebra_price) toUpdate.zebra_price = req.body.zebra_price;
+    let result = await toUpdate.save();
+    console.log("Sucess " + result)
+    res.send(result)
+    } catch (err) {
+    res.status(500)
+    res.send(`{"error": ${err}: Update for id ${req.params.id}
+    failed`);
+    }
+    };
+    // Handle zebra delete on DELETE.
+exports.zebra_delete = async function(req, res) {
+    console.log("delete " + req.params.id)
+    try {
+    result = await zebra.findByIdAndDelete( req.params.id)
+    console.log("Removed " + result)
+    res.send(result)
+    } catch (err) {
+    res.status(500)
+    res.send(`{"error": Error deleting ${err}}`);
+    }
+    };
+    // Handle a show one view with id specified by query
+exports.zebra_view_one_Page = async function(req, res) {
+console.log("single view for id " + req.query.id)
+try{
+result = await zebra.findById( req.query.id)
+res.render('zebradetail',
+{ title: 'zebra Detail', toShow: result });
+}
+catch(err){
+res.status(500)
+res.send(`{'error': '${err}'}`);
+}
+};
+// Handle building the view for creating a zebra.
+// No body, no in path parameter, no query.
+// Does not need to be async
+exports.zebra_create_Page = function(req, res) {
+    console.log("create view")
+    try{
+    res.render('zebracreate', { title: 'zebra Create'});
+    }
+    catch(err){
+    res.status(500)
+    res.send(`{'error': '${err}'}`);
+    }
+    };
+    // Handle building the view for updating a zebra.
+// query provides the id
+exports.zebra_update_Page = async function(req, res) {
+console.log("update view for item "+req.query.id)
+try{
+let result = await zebra.findById(req.query.id)
+res.render('zebraupdate', { title: 'zebra Update', toShow: result });
+}
+catch(err){
+res.status(500)
+res.send(`{'error': '${err}'}`);
+}
+};
+// Handle a delete one view with id from query
+exports.zebra_delete_Page = async function(req, res) {
+console.log("Delete view for id " + req.query.id)
+try{
+result = await zebra.findById(req.query.id)
+res.render('zebradelete', { title: 'zebra Delete', toShow:
+result });
+}
+catch(err){
+res.status(500)
+res.send(`{'error': '${err}'}`);
+}
+};

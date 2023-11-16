@@ -1,0 +1,23 @@
+extends layout
+
+block content
+  - if (toShow != null)
+    h1(class='detailh1')= title
+
+    - let zebraid = toShow._id
+    - let zebra_color = toShow.zebra_color
+    - let zebra_breed = toShow.zebra_breed
+    - let zebra_price = toShow.zebra_price 
+
+    div
+      div.row
+        div(class='zebraAttr') zebra ID is: #{zebraid} 
+      div.row
+        div(class='zebraAttr') zebra color is: #{zebra_color}
+      div.row
+        div(class='zebraAttr') zebra breed is: #{zebra_breed} 
+      div.row
+        div(class='zebraAttr') zebra price is: #{zebra_price}
+  - else
+    script.
+      alert('Error: No zebra found with the provided ID.');
